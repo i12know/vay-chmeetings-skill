@@ -14,7 +14,7 @@ ChMeetings is a multi-tenant church management system (ChMS) with an Accounting,
 Key implication for every project in this portfolio: **scope matters**. A People read at the church level may return different results than the same read inside a specific ministry. Whenever you design or audit an endpoint call, state explicitly which scope you are in (diocese / church / ministry) and whether the user context has access to that scope. Write this into comments in code.
 
 Bumble's context, which shapes most of what this portfolio does:
-- He is Owner of Vietnamese Alliance Youth (VAY) at the diocese level.
+- He is Owner of Vietnamese Alliance Youth (VAY) at the diocese level. The `vaysf` project operates at the **VAY SM church level** within that diocese — VAY SM is the church tenant the Sports Fest API key is scoped to.
 - He is Lead Pastor at Redemption Point Church (RP) — a church tenant inside the Vietnamese District.
 - The Vietnamese District itself is another ChMeetings tenant (vdmansys targets this level).
 
@@ -42,7 +42,7 @@ Authentication is an API key issued per tenant. The admin generates it under **S
 
 Rules that apply across every project in this portfolio:
 
-- API keys live in `.env` files (never committed), loaded via `python-dotenv` or equivalent. Variable names are `CHMEETINGS_API_KEY` (single-tenant) or `CHMEETINGS_API_KEY_<TENANT>` where tenant is something like `VAY`, `RP`, `VD` (diocese / church / ministry scopes must be named, not numbered).
+- API keys live in `.env` files (never committed), loaded via `python-dotenv` or equivalent. Variable names are `CHMEETINGS_API_KEY` (single-tenant) or `CHMEETINGS_API_KEY_<TENANT>` where tenant is something like `VAY_SM`, `RP`, `VD` (diocese / church / ministry scopes must be named, not numbered). Exception: `vaysf` uses `CHM_API_KEY` — this is correct and established; do not rename it.
 - `.env.template` is committed with blank values. `.env` is in `.gitignore`.
 - Never log the key. If you need to confirm configuration, log the first four characters with `****` for the rest.
 - Keys that leak must be rotated in the ChMeetings UI immediately; there is no programmatic rotation endpoint.
@@ -200,7 +200,7 @@ Semantic versioning. Commit messages follow the form `<scope>: <imperative summa
 
 ### 10.1 `vaysf` — VAY Sports Fest Integration
 **Role:** Production system bridging ChMeetings (registration) ↔ WordPress (operations) for the annual Vietnamese Alliance Youth sports festival.
-**Tenant scope:** VAY (diocese level).
+**Tenant scope:** VAY SM (church level within the VAY diocese).
 **Tech:** Python middleware on Windows, WordPress plugin (PHP), MIT licensed.
 **Key features:** Participant validation, pastor approval workflow, team rosters, API-based approval sync, Excel report fallback, centralized `CHM_FIELDS`, API field inspector.
 **Not in scope:** General church management, contributions, accounting. Stay focused on sports fest participant lifecycle.
