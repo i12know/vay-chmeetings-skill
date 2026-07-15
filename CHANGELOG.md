@@ -8,7 +8,7 @@ and the skill uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
 ### Added
-- Documentation note for VAY ChMeetings web entrypoints, `https://onelink.to/_vay` routing, login-state behavior, and Member Portal integration implications.
+- Documentation note for VAY ChMeetings web entrypoints, `https://onelink.to/_vay` routing, shared-versus-branded tenant hosts, the verified VAY SM Guest route, Guest/Member portal variants, and Member Portal integration implications.
 
 ## [0.1.0] — 2026-04-22
 
