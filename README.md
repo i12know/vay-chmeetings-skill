@@ -26,6 +26,10 @@ vay-chmeetings-skill/
     └── SKILL.md          # the skill itself — this is what Claude Code reads
 ```
 
+## Supporting docs
+
+- [`docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md`](docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md) documents observed behavior for `https://onelink.to/_vay`, `https://vay.chmeetings.com/`, login-state routing, and Member Portal integration implications.
+
 ## How consuming projects use it
 
 There are three deployment options. Pick one per repo; the skill itself is identical.
