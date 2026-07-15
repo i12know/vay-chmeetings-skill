@@ -30,6 +30,13 @@ vay-chmeetings-skill/
 
 - [`docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md`](docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md) documents observed behavior for `https://onelink.to/_vay`, `https://vay.chmeetings.com/`, login-state routing, and Member Portal integration implications.
 - [`docs/MEMBER_PORTAL_BUILDER_ARCHITECTURE.md`](docs/MEMBER_PORTAL_BUILDER_ARCHITECTURE.md) is the architecture and UX guide for Builder cards, Pages, HTML/CSS/JavaScript boundaries, external apps, iframe pilots, mobile behavior, security, and publishing governance.
+- [`docs/MEMBER_PORTAL_VALIDATION_RUNBOOK.md`](docs/MEMBER_PORTAL_VALIDATION_RUNBOOK.md) provides the repeatable pre-customization contract check for official documentation, public routes, and an optional read-only live Builder inspection.
+
+Quick validation before Member Portal work:
+
+```powershell
+node scripts\validate-member-portal.mjs --require-cdp
+```
 
 ## How consuming projects use it
 

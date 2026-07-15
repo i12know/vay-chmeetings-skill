@@ -7,6 +7,15 @@ and the skill uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-15
+
+### Added
+- Dependency-free Member Portal contract validator with a versioned baseline, official Help Center API checks, public route checks, optional read-only Chrome DevTools Builder inspection, Markdown/JSON reports, and offline tests.
+- Validation runbook defining the annual pre-customization gate, drift triage, manual test matrix, and controlled baseline update process.
+
+### Changed
+- The architecture guide and shared skill now require the validation gate before seasonal Member Portal customization.
+
 ## [0.1.1] - 2026-07-15
 
 ### Added

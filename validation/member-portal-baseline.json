@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "name": "VAY ChMeetings Member Portal contract baseline",
+  "reviewedAt": "2026-07-15",
+  "helpCenterApiBase": "https://help.chmeetings.com/api/v2/help_center/en-us/articles",
+  "articles": [
+    {
+      "key": "builder-cards",
+      "id": 17947186556828,
+      "title": "Builder Cards List & Guide",
+      "updatedAt": "2026-07-08T12:17:27Z",
+      "requiredPhrases": [
+        "The Text/HTML Card lets you format text, add images or add HTML code",
+        "A link card allows you to link to anything on the web",
+        "This card allows you to embed ChMeetings forms on your page"
+      ],
+      "expectedHeadings": [
+        "Container",
+        "Link",
+        "Video",
+        "Audio",
+        "Photo",
+        "Media (Exclusive To The Branded App)",
+        "Form",
+        "Event",
+        "Upcoming Events",
+        "Calendar",
+        "Article",
+        "Blog",
+        "Donate Button",
+        "Google Map",
+        "Social Media Links",
+        "Live Streaming",
+        "Verse of the Day",
+        "RSS Feed",
+        "Text/HTML",
+        "Page"
+      ]
+    },
+    {
+      "key": "manage-content",
+      "id": 17947454929820,
+      "title": "Manage Content",
+      "updatedAt": "2026-04-29T15:45:42Z",
+      "requiredPhrases": [
+        "The Builder is split into three columns",
+        "Only those who are logged into an app account can see the card",
+        "deleted cards cannot be restored",
+        "You can share pages with anyone online using direct links"
+      ]
+    },
+    {
+      "key": "custom-design-limit",
+      "id": 28036914196124,
+      "title": "How can I add my own design to specific app sections?",
+      "updatedAt": "2026-06-09T11:22:13Z",
+      "requiredPhrases": [
+        "not open to section-specific custom design",
+        "change your main app color",
+        "Member Portal Builder"
+      ]
+    },
+    {
+      "key": "builder-overview",
+      "id": 4411175383441,
+      "title": "Get To Know The Member Portal Builder",
+      "updatedAt": "2025-08-14T15:36:56Z",
+      "requiredPhrases": [
+        "Desktop / Web App Only",
+        "The Member Portal is available on both the desktop and mobile app",
+        "Builder permission"
+      ]
+    },
+    {
+      "key": "website-integration",
+      "id": 11107321017245,
+      "title": "Website Integration",
+      "updatedAt": "2026-05-18T08:24:33Z",
+      "requiredPhrases": [
+        "does not yet provide direct integration with any website-building platform",
+        "You can embed Events to your website",
+        "Forms can be embedded into your website",
+        "Church App Pages"
+      ]
+    },
+    {
+      "key": "portal-appearance",
+      "id": 17946828994204,
+      "title": "Configure The Member Portal Appearance",
+      "updatedAt": "2026-06-09T09:24:34Z",
+      "requiredPhrases": [
+        "These settings will apply to the desktop and mobile versions of your Member Portal",
+        "Settings Exclusively Available With the Branded App"
+      ]
+    },
+    {
+      "key": "portal-settings",
+      "id": 360020865037,
+      "title": "Configure the Member Portal",
+      "updatedAt": "2025-12-18T11:59:55Z",
+      "requiredPhrases": [
+        "Invitation Link",
+        "merge fields at the top of the text editor",
+        "Text/HTML Card in the Builder"
+      ]
+    }
+  ],
+  "publicRoutes": [
+    {
+      "key": "vay-root",
+      "url": "https://vay.chmeetings.com/",
+      "expectedStatus": 200,
+      "expectedFinalUrl": "https://vay.chmeetings.com/",
+      "expectedTitle": "Vietnamese Alliance Churches"
+    },
+    {
+      "key": "vay-sm-guest",
+      "url": "https://vay.chmeetings.com/2E3F3637741B61D9/guest",
+      "expectedStatus": 200,
+      "expectedFinalUrl": "https://vay.chmeetings.com/2E3F3637741B61D9/guest",
+      "expectedTitle": "VAY SM",
+      "requiredPhrases": [
+        "All Schedules",
+        "Sports Fest Handbook",
+        "Sports Fest Facility and Safety Notice"
+      ]
+    },
+    {
+      "key": "vay-onelink-desktop",
+      "url": "https://onelink.to/_vay",
+      "expectedStatus": 200,
+      "expectedFinalUrl": "https://vay.chmeetings.com/?"
+    }
+  ],
+  "builder": {
+    "urlIncludes": "/Core/MemberAccess/builder",
+    "titleIncludes": "Builder",
+    "requiredPhrases": [
+      "Add Cards",
+      "Preview",
+      "Guest",
+      "Member",
+      "Menu Setup",
+      "Settings"
+    ],
+    "requiredCards": [
+      ["Container"],
+      ["Link"],
+      ["Video"],
+      ["Audio"],
+      ["Photo", "Photos"],
+      ["Media"],
+      ["Form"],
+      ["Event"],
+      ["Upcoming Events"],
+      ["Calendar"],
+      ["Article"],
+      ["Blog"],
+      ["Donate Button"],
+      ["Google Map"],
+      ["Social Media Links"],
+      ["Live Streaming"],
+      ["Verse of the Day"],
+      ["RSS Feed"],
+      ["Text/HTML"],
+      ["Page"]
+    ]
+  },
+  "manualChecks": [
+    "Open the tenant root in a fresh browser and confirm the JavaScript login redirect and account-creation path.",
+    "Use an ordinary member account to verify the real Member home, URL, permissions, and direct-link return behavior.",
+    "Compare Guest and Member Builder previews with the corresponding published experiences.",
+    "Test the published flow on current iOS and Android ChMeetings apps, including Back/Close, keyboard, rotation, and resume.",
+    "Confirm plan and Branded App entitlements separately in every target tenant, especially VAY SM and RPC.",
+    "If custom HTML, an external app, or an iframe is planned, use a disposable Page with synthetic data and follow the architecture guide's pilot checklist."
+  ]
+}

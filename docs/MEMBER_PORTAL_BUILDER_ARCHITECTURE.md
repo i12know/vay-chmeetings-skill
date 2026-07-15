@@ -15,6 +15,11 @@ Audience:
 Related orientation:
 [Web Entrypoints and Member Portal Notes](WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md).
 
+Before seasonal customization, run the read-only contract check in the
+[Member Portal Validation Runbook](MEMBER_PORTAL_VALIDATION_RUNBOOK.md). It
+compares current official documentation, public routes, and the open Builder tab
+with a reviewed baseline and reports drift without changing ChMeetings.
+
 ## Executive rules
 
 Treat the Member Portal Builder as a constrained app/content composer, not as a
@@ -472,19 +477,22 @@ Last verified ChMeetings version/date:
 
 Before recommending or changing Builder content:
 
-1. Check the current ChMeetings Help Center and release notes. Builder features
+1. Run the validation command from the
+   [Member Portal Validation Runbook](MEMBER_PORTAL_VALIDATION_RUNBOOK.md). Do
+   not proceed past a warning or failure until the difference is reviewed.
+2. Check the current ChMeetings Help Center and release notes. Builder features
    change more frequently than this repository.
-2. Inspect the live tenant only when the user authorizes it. Do not publish,
+3. Inspect the live tenant only when the user authorizes it. Do not publish,
    save, reorder, delete, or toggle visibility during a read-only investigation.
-3. Separate official documentation, live observation, and inference in the
+4. Separate official documentation, live observation, and inference in the
    answer and in committed notes.
-4. Never infer arbitrary CSS, JavaScript, iframe, merge-field, deep-link, or SSO
+5. Never infer arbitrary CSS, JavaScript, iframe, merge-field, deep-link, or SSO
    support from browser source code or from another tenant.
-5. Prefer native cards and official share links. If proposing an external app,
+6. Prefer native cards and official share links. If proposing an external app,
    document identity, authorization, API-key custody, mobile navigation, failure
    states, and test coverage.
-6. Never use an admin session as evidence of a normal member journey.
-7. Add new verified findings to this guide or the entrypoint notes with the date,
+7. Never use an admin session as evidence of a normal member journey.
+8. Add new verified findings to this guide or the entrypoint notes with the date,
    tenant, exact route/context, and ChMeetings documentation source.
 
 ## Open questions requiring direct tests

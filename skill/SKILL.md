@@ -41,6 +41,9 @@ boundaries, external web apps, iframe decisions, and mobile UX, read
 `../docs/MEMBER_PORTAL_BUILDER_ARCHITECTURE.md` before proposing or changing a
 portal experience. For tenant roots, Guest/Member routes, and login-state
 behavior, also read `../docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md`.
+Before seasonal Builder work, run the read-only validation gate documented in
+`../docs/MEMBER_PORTAL_VALIDATION_RUNBOOK.md`; do not proceed past a warning or
+failure until the detected drift has been reviewed.
 
 ## 3. Authentication
 
@@ -260,4 +263,4 @@ Before writing the first API call in a new project or feature:
 ---
 
 **Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes).
-**Skill version:** 0.1.1.
+**Skill version:** 0.1.2.
