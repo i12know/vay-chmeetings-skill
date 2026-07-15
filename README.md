@@ -29,6 +29,7 @@ vay-chmeetings-skill/
 ## Supporting docs
 
 - [`docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md`](docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md) documents observed behavior for `https://onelink.to/_vay`, `https://vay.chmeetings.com/`, login-state routing, and Member Portal integration implications.
+- [`docs/MEMBER_PORTAL_BUILDER_ARCHITECTURE.md`](docs/MEMBER_PORTAL_BUILDER_ARCHITECTURE.md) is the architecture and UX guide for Builder cards, Pages, HTML/CSS/JavaScript boundaries, external apps, iframe pilots, mobile behavior, security, and publishing governance.
 
 ## How consuming projects use it
 
@@ -94,7 +95,7 @@ See §11 "Update discipline" inside `skill/SKILL.md`. Short version: whenever a 
 ## Non-goals
 
 - This skill does **not** replace project-specific `CLAUDE.md` files. Those still exist in each consuming repo and capture project-specific conventions (build commands, test invocation, repo-unique workflows).
-- This skill does **not** hold secrets. No API keys, no tenant IDs.
+- This skill does **not** hold secrets. No API keys or private identifiers. Public tenant route identifiers may be documented only as part of a verified public URL.
 - This skill is **not** an API reference. The Scalar docs at https://api.chmeetings.com/scalar/ are the API reference. This skill is the integration playbook that sits on top of it.
 
 ## License

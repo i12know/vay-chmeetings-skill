@@ -184,6 +184,10 @@ test for public instructions.
 The Member Portal should be treated as the member-facing experience, not the
 same thing as the tenant root login page.
 
+For the supported Builder card catalog, HTML/CSS/JavaScript boundaries,
+external-app architecture, iframe policy, and mobile UX checklist, see the
+[Member Portal Builder Architecture and UX Guide](MEMBER_PORTAL_BUILDER_ARCHITECTURE.md).
+
 For Sports Fest and similar workflows, the Member Portal may be the better home
 for:
 

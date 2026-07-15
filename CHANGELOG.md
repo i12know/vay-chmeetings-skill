@@ -7,8 +7,14 @@ and the skill uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-15
+
 ### Added
 - Documentation note for VAY ChMeetings web entrypoints, `https://onelink.to/_vay` routing, shared-versus-branded tenant hosts, the verified VAY SM Guest route, Guest/Member portal variants, and Member Portal integration implications.
+- Member Portal Builder architecture and UX guide covering native card and Page selection, HTML/CSS/JavaScript support boundaries, external app integration, iframe pilots, mobile UX, security, testing, and publishing governance.
+
+### Changed
+- The shared skill now directs Member Portal Builder work to the maintained architecture and entrypoint guides.
 
 ## [0.1.0] — 2026-04-22
 

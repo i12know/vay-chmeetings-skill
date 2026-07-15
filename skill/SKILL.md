@@ -36,6 +36,12 @@ Operator consoles and related URLs:
 - Status page: `https://chmeetings.statuspage.io`
 - API key generation: inside the app at **Settings > Integrations > API Integration**
 
+For Member Portal Builder, card/Page selection, HTML/CSS/JavaScript support
+boundaries, external web apps, iframe decisions, and mobile UX, read
+`../docs/MEMBER_PORTAL_BUILDER_ARCHITECTURE.md` before proposing or changing a
+portal experience. For tenant roots, Guest/Member routes, and login-state
+behavior, also read `../docs/WEB_ENTRYPOINTS_AND_MEMBER_PORTAL.md`.
+
 ## 3. Authentication
 
 Authentication is an API key issued per tenant. The admin generates it under **Settings > Integrations > API Integration**. There is no OAuth on the public API today, so every project treats the key as a high-privilege secret.
@@ -254,4 +260,4 @@ Before writing the first API call in a new project or feature:
 ---
 
 **Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes).
-**Skill version:** 0.1.0 (initial).
+**Skill version:** 0.1.1.
