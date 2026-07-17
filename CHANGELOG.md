@@ -7,6 +7,46 @@ and the skill uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-07-17
+
+Findings from the issue #2 read-only live probes (RP tenant console, CDP
+session, 2026-07-17). No settings were changed and no records were touched
+during the probes.
+
+### Added
+- RP tenant field inventory and structure guide (`docs/RP_TENANT_FIELD_INVENTORY.md`),
+  redacted to field names, option labels, and naming patterns: standard +
+  custom People fields (discipleship-pathway fields included), Native Name
+  enablement, flat Groups structure with naming conventions, forms-in-use
+  patterns, and RP Member Portal state.
+- Branded-host entrypoint section in the web entrypoints doc: a branded host
+  root (`rpc.chmeetings.com/`) sends anonymous visitors straight to `/guest`
+  with no tenant path id, unlike the shared-host root's login redirect.
+
+### Changed
+- Skill §1: corrected the tenant hierarchy — "Vietnamese District" is a
+  church-level tenant (a registry of the District's pastors) inside the
+  Vietnamese Alliance Churches diocese account, a sibling of RP and VAY SM,
+  not a separate diocese-level account.
+- Skill §3: documented the key-issuance UI reality at church scope — one
+  80-char key per tenant, readonly display, no scopes/permissions/expiry, and
+  "Change Key" as destructive rotation that disables all connected apps.
+- Skill §4: rate limiting — ChMeetings now publishes a limit but their docs
+  conflict (100 req/s vs 100 req/20s); design to the conservative number.
+  API-surface table updated: Groups API now has person add/remove writes,
+  Events API grew occurrence/attendance reads, plus Organizations-scoped
+  variants, Address API, Blog Posts CRUD, and People "Get all member fields"
+  (the programmatic path to a `CHM_FIELDS` inventory). Live OpenAPI spec URL
+  recorded in §2.
+- Skill §5: webhooks — verification uses a per-webhook **Secret Key**
+  retrievable only from the Edit dialog after creation; no HMAC or signature
+  header is documented (UI, Help Center, or OpenAPI spec, checked
+  2026-07-17). Registration is one endpoint URL + event checkboxes; there is
+  no delivery log or retry UI. Event catalog gained Attendance `checked_in`.
+  Open question recorded: whether the Secret Key arrives as a header or in
+  the payload.
+- Skill §8: Native Name confirmed enabled for RP.
+
 ## [0.1.3] - 2026-07-16
 
 ### Added
