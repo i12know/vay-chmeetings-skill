@@ -5,7 +5,7 @@ description: Use this skill whenever the task involves ChMeetings — the church
 
 # ChMeetings Integration Skill
 
-This skill is the shared ground truth for every project in the `i12know` ChMeetings portfolio — currently `vaysf`, `rp-pathway-app`, and `vdmansys`. Read it fully before writing API code, designing a schema, or proposing an integration pattern. When it conflicts with older project docs, this skill wins; open a PR against this repo to update it.
+This skill is the shared ground truth for every project in the `i12know` ChMeetings portfolio — currently `vaysf`, `rp-pathway-app`, `vdmansys`, and `jlife-platform`. Read it fully before writing API code, designing a schema, or proposing an integration pattern. When it conflicts with older project docs, this skill wins; open a PR against this repo to update it.
 
 ## 1. Platform orientation
 
@@ -228,7 +228,15 @@ Semantic versioning. Commit messages follow the form `<scope>: <imperative summa
 **Tenant scope:** Vietnamese District (diocese level).
 **Not in scope:** Single-church pathways (that's `rp-pathway-app`), sports fest registration (that's `vaysf`).
 
-**Scope discipline:** Every time a feature feels like it "could live in any of them", stop and decide where it belongs before coding. Features living in the wrong project is the #1 risk to maintainability of this portfolio.
+### 10.4 `jlife-platform` — J-Life Disciplemaking Platform
+**Role:** (ChMeetings phase planned.) WordPress multisite platform for structured study content, private huddles, and coaching, with Disciple.Tools as the ministry-workflow CRM. Its `jlife-chm-sync` module (Phase C of its roadmap) will do a **one-way ChMeetings → Disciple.Tools roster sync**: approved people/groups and external IDs per an approved field map. It never writes membership data back to ChMeetings; at most a deliberately reviewed aggregate summary may be pushed later.
+**Tenant scope:** RP (single church) — the **same tenant as `rp-pathway-app`**. Scope line between them: RP Pathway owns signups/pathway tracking against ChMeetings; J-Life consumes roster reads to mirror people/groups into Disciple.Tools. Neither becomes a signup system of record.
+**Governing docs:** `docs/integration-boundaries.md` in the jlife-platform repo pre-commits what may and may not flow; its rules win over convenience. Participant content (notes, discussion, prayer) never reaches ChMeetings.
+**Consumption:** Option C (reference from its `CLAUDE.md`) until Phase C begins; then Option A (submodule) in the first `jlife-chm-sync` PR.
+**Key skill sections for this project:** §4 multi-tenant scoping and the merge-orphan lifecycle (stored `chm_person_id`s on D.T contacts must follow retire-never-delete), §5 webhooks (People created/updated/deleted enables event-driven sync), §6 `CHM_FIELDS`, §8 Vietnamese conventions (Native Name ↔ its Vietnamese-first posture).
+**Not in scope:** Pathway signups (that's `rp-pathway-app`), district reporting (that's `vdmansys`), sports fest (that's `vaysf`).
+
+**Scope discipline:** Every time a feature feels like it "could live in any of them", stop and decide where it belongs before coding. Features living in the wrong project is the #1 risk to maintainability of this portfolio. The RP tenant now has **two** consumers (`rp-pathway-app`, `jlife-platform`) — respect the scope line in §10.4 when a feature could sit in either.
 
 ## 11. Update discipline
 
@@ -267,4 +275,4 @@ Before writing the first API call in a new project or feature:
 ---
 
 **Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes); tenant-scoping behavior live-probed 2026-07-16.
-**Skill version:** 0.1.3.
+**Skill version:** 0.1.4.

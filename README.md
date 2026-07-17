@@ -13,6 +13,7 @@ This repo holds a single source of truth that teaches Claude Code how to work wi
 | [`vaysf`](https://github.com/i12know/vaysf) | VAY (diocese) | VAY Sports Fest registration + operations bridge to WordPress |
 | [`rp-pathway-app`](https://github.com/i12know/rp-pathway-app) | Redemption Point (church) | Discipleship pathway tracking for RP members |
 | [`vdmansys`](https://github.com/i12know/vdmansys) | Vietnamese District (diocese) | District-level operations and reporting across member churches |
+| [`jlife-platform`](https://github.com/i12know/jlife-platform) | Redemption Point (church) | SonLife/J-Life disciplemaking platform (WordPress multisite + Disciple.Tools); one-way ChMeetings → D.T roster sync planned for its Phase C (`jlife-chm-sync`) |
 
 ## Repo layout
 
@@ -93,7 +94,7 @@ https://github.com/i12know/vay-chmeetings-skill/blob/main/skill/SKILL.md
 
 Pros: zero maintenance. Cons: requires Claude Code to fetch remotely, and offline work has no context.
 
-**Recommendation:** Option A for `vaysf` (active production work); Option B for `rp-pathway-app` and `vdmansys` while they're still early.
+**Recommendation:** Option A for `vaysf` (active production work); Option B for `rp-pathway-app` and `vdmansys` while they're still early; Option C for `jlife-platform` until its ChMeetings phase (Phase C) begins, then Option A in the first `jlife-chm-sync` PR.
 
 ## When to update this skill
 
