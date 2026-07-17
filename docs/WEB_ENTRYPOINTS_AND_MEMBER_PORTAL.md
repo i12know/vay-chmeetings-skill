@@ -67,6 +67,29 @@ The shared hostname does not mean all churches use the same portal content.
 ChMeetings scopes tenant-specific routes with an identifier such as
 `2E3F3637741B61D9` for the currently observed VAY SM routes.
 
+### Branded-host behavior (RP, observed 2026-07-17)
+
+The branded host changes the anonymous-visitor experience, verified with
+fresh-context (no-cookie) renders against RP's branded host:
+
+- `https://rpc.chmeetings.com/` **redirects an anonymous visitor straight to
+  `/guest`** — the live Guest portal — instead of the login page the shared
+  host root shows. No tenant path identifier is needed anywhere in
+  branded-host URLs.
+- The same tenant remains reachable on the shared host at its tenant-scoped
+  guest route (`https://vay.chmeetings.com/<tenant-id>/guest`), with the same
+  portal content.
+- Caveat observed once: the shared-host guest route rendered several labels as
+  raw i18n keys (`common.homePage`, `login.Login`) in anonymous contexts while
+  the branded host resolved them all. Re-verify before publishing shared-host
+  links in public instructions; prefer the branded host for tenants that have
+  one.
+
+Implication for link publishing: for a branded-app tenant, the root domain is
+itself a safe public entry link (anonymous users land on the Guest portal, not
+a login wall). For shared-host tenants, only the tenant-scoped `/guest` route
+has that property.
+
 ## Current public shortcut
 
 The current public shortcut is:

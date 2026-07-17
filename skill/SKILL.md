@@ -13,12 +13,12 @@ ChMeetings is a multi-tenant church management system (ChMS) with an Accounting,
 
 Key implication for every project in this portfolio: **scope matters**. A People read at the church level may return different results than the same read inside a specific ministry. Whenever you design or audit an endpoint call, state explicitly which scope you are in (diocese / church / ministry) and whether the user context has access to that scope. Write this into comments in code.
 
-Bumble's context, which shapes most of what this portfolio does:
-- He is Owner of Vietnamese Alliance Youth (VAY) at the diocese level. The `vaysf` project operates at the **VAY SM church level** within that diocese — VAY SM is the church tenant the Sports Fest API key is scoped to.
-- He is Lead Pastor at Redemption Point Church (RP) — a church tenant inside the Vietnamese District.
-- The Vietnamese District itself is another ChMeetings tenant (vdmansys targets this level).
+Bumble's context, which shapes most of what this portfolio does (hierarchy re-verified against the live Churches screen, 2026-07-17):
+- The diocese-level account is **Vietnamese Alliance Churches**, on the shared `vay.chmeetings.com` host. Bumble is Owner at this diocese level.
+- The church tenants under that diocese are **siblings** of each other. They include: **VAY SM** (the tenant the `vaysf` Sports Fest key is scoped to), **Redemption Point Church (RP)** (Bumble is Lead Pastor; `rp-pathway-app` scope), **Vietnamese District**, Midway Church, VAY Southern California, VAY-EM, and a few smaller tenants.
+- **"Vietnamese District" is a church-level tenant, not a separate diocese account.** Its purpose is to hold the District's pastors as people records (`vdmansys` targets this tenant). Do not model it as a parent of RP — RP and Vietnamese District are siblings under the Vietnamese Alliance Churches diocese.
 
-Treat "Vietnamese District" and "VAY" as distinct tenants in code and configuration even when they feel related organizationally.
+Treat every tenant as a distinct scope in code and configuration even when they feel related organizationally; an API key issued in one sees none of the others (see §4).
 
 ## 2. Canonical resources
 
@@ -26,7 +26,7 @@ These four URLs are the single source of truth. When the skill and the official 
 
 | Resource | URL | What it's for |
 |---|---|---|
-| API reference (Scalar) | https://api.chmeetings.com/scalar/ | Endpoint shapes, request/response schemas, authentication. The OpenAPI JSON is what `vaysf` has committed as `chmeetings_openapi_v1.json`. |
+| API reference (Scalar) | https://api.chmeetings.com/scalar/ | Endpoint shapes, request/response schemas, authentication. The OpenAPI JSON is what `vaysf` has committed as `chmeetings_openapi_v1.json`; the live spec is downloadable unauthenticated at https://api.chmeetings.com/openapi/v1.json — use it to refresh committed snapshots. |
 | MCP resources | https://mcp.chmeetings.com/resources | Model Context Protocol tools exposed by ChMeetings for AI agents. |
 | Help Center | https://help.chmeetings.com/hc/en-us | Operator-facing documentation; useful for understanding UX state behind data you see in API responses. The Developer API Guide at `https://help.chmeetings.com/hc/en-us/articles/4407466673937-Developer-API-Guide` is the canonical human-readable API overview. |
 | Release Notes | https://www.chmeetings.com/release-notes/ | Authoritative log of what shipped when. Check this first whenever behavior looks different from what the code expects. Previous years link at the bottom of that page. |
@@ -49,6 +49,12 @@ failure until the detected drift has been reviewed.
 
 Authentication is an API key issued per tenant. The admin generates it under **Settings > Integrations > API Integration**. There is no OAuth on the public API today, so every project treats the key as a high-privilege secret.
 
+Key-issuance UI reality (verified at RP church scope, 2026-07-17):
+- Issuance is available at the church-tenant level. The screen offers a "Get API" button (first issuance) or a readonly key display plus a **Change Key** button (rotation). The observed key format is an 80-character alphanumeric string.
+- There are **no scope options, no per-key permissions, and no expiry settings** — one key per tenant, full access to that tenant's data.
+- **Change Key is destructive rotation**: official docs state it "will disable all apps that are using your current key." Never click it casually; treat rotation as a coordinated deployment event.
+- The API is plan-gated ("available starting with the Growth Plan" per the Developer API Guide).
+
 Rules that apply across every project in this portfolio:
 
 - API keys live in `.env` files (never committed), loaded via `python-dotenv` or equivalent. Variable names are `CHMEETINGS_API_KEY` (single-tenant) or `CHMEETINGS_API_KEY_<TENANT>` where tenant is something like `VAY_SM`, `RP`, `VD` (diocese / church / ministry scopes must be named, not numbered). Exception: `vaysf` uses `CHM_API_KEY` — this is correct and established; do not rename it.
@@ -65,14 +71,15 @@ This is the working inventory as of the 2026.5 release. Always cross-check `chme
 
 | Resource | Ops | Notes |
 |---|---|---|
-| People | GET, POST, PUT, DEL | Filter by full name, mobile number, email. Supports `includeOrganizations=true`. Native Name field is supported when enabled in Account Settings. |
+| People | GET, POST, PUT, DEL | Filter by full name, mobile number, email. Supports `includeOrganizations=true`. Native Name field is supported when enabled in Account Settings. Also: profile-photo POST, **"Get all member fields"** (programmatic field inventory — use it to build/refresh `CHM_FIELDS`), and Genders / Social Statuses / Grade Values enum reads. |
 | People notes | GET, POST, PATCH/PUT, DEL | Separate "Notes API" for profile notes. |
 | People → organizations | GET `people/{personId}/organizations` | Returns the organizations a person belongs to. |
 | Families | GET, POST, DELETE, PATCH | Includes family roles; family members are a sub-resource. |
-| Groups | GET | Read-only at time of writing. |
-| Churches | GET | Diocese-level read. |
-| Ministries | GET | Sub-scope of a church. |
-| Events | GET (Read API) | Church and ministry level; occurrence and attendance data. |
+| Groups | GET, POST, DEL | **No longer read-only** (Developer API Guide, 2026-07): Add Person to Group (POST) and Remove Person from Group (DEL) exist, plus "Organizations - Groups" variants for org-scoped reads/writes. |
+| Organizations | GET | `Get Organizations` / `Get Organization by Id`. The older Churches/Ministries listings appear subsumed by Organizations endpoints. |
+| Events | GET (Read API) | Church and ministry level. Now includes occurrences, attendance statistics across a date range, per-occurrence attendance summary and paginated attendance lists, and "Organizations - Events" scoped variants. |
+| Address | GET | Countries and states-by-country lookups. |
+| Blog Posts | GET, POST, PUT, DEL | Full CRUD plus categories, comments, likes, and Organizations variants. |
 | Contributions | GET, POST | POST (Add Contribution) accepts a `BatchNumber`. Refunds recorded as separate negative entries. |
 | Pledges / Campaigns | GET | Pledge campaigns and their records. |
 | Batches | GET, POST, PUT, DEL, plus close/reopen | Full CRUD on contribution batches. Online-giving batches auto-created daily as `YYYY-MM-DD Online Giving`; their dates are not editable and manual contributions cannot be added. |
@@ -95,7 +102,7 @@ The `vaysf` codebase established the pattern: paginate using the response's `tot
 
 ### Rate limiting
 
-ChMeetings does not publish a public rate limit number. Treat 429 as a signal to back off exponentially (start at 2s, double up to 60s, max ~6 retries). Log every 429 with endpoint and tenant so we can build a picture of real limits over time. For bulk syncs, prefer batching and off-peak scheduling over hammering.
+ChMeetings now publishes a rate limit, but their own docs conflict (checked 2026-07-17): the Developer API Guide (updated 2026-07-08) says **"100 requests per second"**, while the Configure Webhooks article (updated 2026-04-02) says **"100 requests per 20s"**. Until they reconcile, design to the conservative number (100/20s ≈ 5 rps sustained). Treat 429 as a signal to back off exponentially (start at 2s, double up to 60s, max ~6 retries). Log every 429 with endpoint and tenant so we can build a picture of real limits over time. For bulk syncs, prefer batching and off-peak scheduling over hammering.
 
 ### Error handling conventions
 
@@ -110,20 +117,25 @@ Wrap every call in a small number of well-named exception types (`ChMeetingsAuth
 
 ## 5. Webhooks
 
-As of 2025.24, ChMeetings supports outbound webhooks under **Settings > Integrations > Webhooks**. Current events:
+As of 2025.24, ChMeetings supports outbound webhooks under **Settings > Integrations > Webhooks**. Current events (verified in the Add Webhook dialog at RP scope, 2026-07-17):
 
 - People: created, updated, deleted
 - Contributions: created
-- Funds: created, updated, deleted
+- Contribution Funds: created, updated, deleted
+- Attendance: checked_in *(new — not yet in the Configure Webhooks help article)*
+
+Registration model (verified 2026-07-17): the Add Webhook form is **one Endpoint URL plus event checkboxes** — one URL per webhook, multiple events per webhook, nothing else. There is **no delivery log and no retry/replay UI**; deliveries are not observable from the ChMeetings side.
+
+**Verification mechanism:** a per-webhook **Secret Key** exists, but it is only retrievable from the **Edit Webhook** dialog *after* the webhook has been created (Configure Webhooks article, updated 2026-04-02: it lets you "distinguish calls coming from ChMeetings"). No HMAC scheme and no signature header name are documented anywhere — UI, Help Center, or OpenAPI spec (checked 2026-07-17). **Open question:** whether the Secret Key arrives as a request header or in the payload; confirming requires registering a webhook and capturing a delivery.
 
 Webhook receivers in this portfolio should:
 
-1. Verify the request actually came from ChMeetings (check the provider's signature header and shared secret once that's documented; treat webhooks as untrusted input until verified).
+1. Verify the request came from ChMeetings using the per-webhook Secret Key once its transport is confirmed; until then, treat webhooks as untrusted input gated by a hard-to-guess endpoint path.
 2. Respond **2xx quickly** (target <1s). Push work onto a queue; don't do sync processing inside the webhook handler.
 3. Be **idempotent**. Assume the same event may be delivered more than once. Deduplicate on an event ID plus resource ID.
-4. Log every received payload to append-only storage for at least 30 days — webhook debugging without a log is misery.
+4. Log every received payload to append-only storage for at least 30 days — webhook debugging without a log is misery. With no provider-side delivery log, your receiver log is the *only* delivery record that exists.
 
-Until ChMeetings documents their signature scheme, treat the webhook endpoint URL as a semi-secret (don't put it in public repos or README screenshots) and pair it with a hard-to-guess path segment.
+Treat the webhook endpoint URL as a semi-secret (don't put it in public repos or README screenshots) and pair it with a hard-to-guess path segment. Note webhooks can be disabled (kept but inactive) from the Edit dialog; deletes are unrecoverable.
 
 ## 6. Field mapping and schema drift
 
@@ -163,7 +175,7 @@ Because the ChMeetings MCP resources page is the canonical index, fetch it fresh
 
 Nearly every deliverable in this portfolio eventually needs both English and Vietnamese. Design for this from day one:
 
-- When ChMeetings' **Native Name** field is enabled, use it. Do not store Vietnamese names only in custom fields when there's a first-class field for them.
+- When ChMeetings' **Native Name** field is enabled, use it. Do not store Vietnamese names only in custom fields when there's a first-class field for them. (Verified enabled for RP, 2026-07-17 — see `../docs/RP_TENANT_FIELD_INVENTORY.md`; Nickname and Multilingual Events/Forms were also enabled.)
 - Diacritics must round-trip. Test with `Nguyễn`, `Hồ`, `Phạm`, `Trần`, `Lê`, and `Đinh` at minimum. Any pipeline that lowercases or strips accents for matching must keep the original preserved for display.
 - Phone numbers are usually US-formatted (10-digit North American) but sometimes stored with country code. Normalize to E.164 on ingest; display in the user's preferred format.
 - Sort order for Vietnamese names in UI is a separate concern from sort order for English names; don't assume one sort works for both. Ask before implementing.
@@ -274,5 +286,5 @@ Before writing the first API call in a new project or feature:
 
 ---
 
-**Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes); tenant-scoping behavior live-probed 2026-07-16.
-**Skill version:** 0.1.4.
+**Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes); tenant-scoping behavior live-probed 2026-07-16; webhook registration UI, API-key issuance UI, tenant hierarchy, RP field/portal state, and published rate-limit statements live-probed 2026-07-17 (read-only, RP console context).
+**Skill version:** 0.1.5.
