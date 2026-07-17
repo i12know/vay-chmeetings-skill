@@ -7,6 +7,14 @@ and the skill uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-16
+
+### Added
+- Multi-tenancy and duplicate-person lifecycle guide (`docs/MULTI_TENANCY_AND_DUPLICATES.md`): live-verified API key scoping semantics (church-scoped keys get a plain 404 for sibling-tenant people; diocese-scoped keys see across tenants with a `church` field naming the owning tenant), key-management rules for diocese-level keys, and the general repair workflow for merge-orphaned external rows — in-tenant-first survivor search, cross-tenant escalation, the merge-direction rule (survivor must remain in the operating tenant), and retire-never-delete external-row repair.
+
+### Changed
+- The shared skill's API-surface section now summarizes multi-tenant scoping pitfalls and points to the new guide.
+
 ## [0.1.2] - 2026-07-15
 
 ### Added

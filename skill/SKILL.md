@@ -85,6 +85,10 @@ Assume anything not in the table is either unavailable via API or was added afte
 
 Most read endpoints accept an implicit scope from the API key plus an explicit ministry context where relevant. When an endpoint returns a `MinistryId` or `ChurchId`, preserve it in your data model — downstream code that filters by ministry will break if this is dropped during transformation.
 
+### Multi-tenant scoping and duplicate persons
+
+API keys are hard-scoped to the organization that issued them (verified by live probe, 2026-07-16). A church-scoped key gets a plain **404 "Invalid Person Id"** — not 403 — for a person in a sibling tenant, so "merged/moved elsewhere" is indistinguishable from "deleted." Search and org-enumeration endpoints are equally walled; only a diocese-scoped key sees across tenants (its person records carry a `church` field naming the owning tenant). Never infer deletion from a 404, never put a diocese key in the default connector's variable, and treat person merges (UI-only; there is no merge API) as lifecycle events that orphan external systems holding the losing ID. The full workflow — in-tenant-first survivor search, cross-tenant escalation, merge-direction rule, external-row retirement — is in [docs/MULTI_TENANCY_AND_DUPLICATES.md](../docs/MULTI_TENANCY_AND_DUPLICATES.md).
+
 ### Pagination
 
 The `vaysf` codebase established the pattern: paginate using the response's `total_count` (or equivalent cursor field) rather than hoping an empty page signals the end. Continue requesting pages until you've retrieved `total_count` records. Log the count on the first page and reconcile the final tally so that truncated syncs are caught by logs, not by users.
@@ -262,5 +266,5 @@ Before writing the first API call in a new project or feature:
 
 ---
 
-**Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes).
-**Skill version:** 0.1.2.
+**Last verified against:** ChMeetings 2026.5 (March 18, 2026 release notes); tenant-scoping behavior live-probed 2026-07-16.
+**Skill version:** 0.1.3.
