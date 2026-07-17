@@ -51,6 +51,13 @@ during the probes.
   Open question recorded: whether the Secret Key arrives as a header or in
   the payload.
 - Skill §8: Native Name confirmed enabled for RP.
+## [0.1.4] - 2026-07-17
+
+### Added
+- `jlife-platform` registered as the fourth consuming project: README table row, consumption recommendation (Option C reference until its ChMeetings Phase C, then Option A submodule), and a §10.4 project brief covering its one-way ChMeetings → Disciple.Tools roster sync (`jlife-chm-sync`), RP tenant scope, the scope line with `rp-pathway-app` (the RP tenant's other consumer), its governing `integration-boundaries.md`, and the skill sections most relevant to it (multi-tenancy/merge-orphan lifecycle, webhooks, `CHM_FIELDS`, Vietnamese conventions).
+
+### Changed
+- Scope-discipline note now flags that the RP tenant has two consumers.
 
 ## [0.1.3] - 2026-07-16
 
