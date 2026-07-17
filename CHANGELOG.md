@@ -19,6 +19,11 @@ during the probes.
   custom People fields (discipleship-pathway fields included), Native Name
   enablement, flat Groups structure with naming conventions, forms-in-use
   patterns, and RP Member Portal state.
+- VAY SM tenant field inventory (`docs/VAYSM_TENANT_FIELD_INVENTORY.md`) for
+  `vaysf`: Sports Fest custom-field catalog (role, church team, sports
+  selection, completion checklist, badge URL), team/season group naming
+  conventions, and confirmation that Account Settings (incl. Native Name) are
+  account-scoped rather than per-tenant.
 - Branded-host entrypoint section in the web entrypoints doc: a branded host
   root (`rpc.chmeetings.com/`) sends anonymous visitors straight to `/guest`
   with no tenant path id, unlike the shared-host root's login redirect.
